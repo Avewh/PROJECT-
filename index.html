@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfecto Patronum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* ========================================
+   TOKENS
+   bg blush: #ffd6ea  |  bg deep: #f8acdf
+   card: #ffffff      |  border grad: #ffd6e7 -> #e5d5ff
+   ink: #594464        |  ink-soft: #75677d / #817489
+   accent chip: #fff0f6 / #a26782
+   good: #6a9b72
+   cta grad: #ff8fc7 -> #ff5fa8
+======================================== */
+
+:root {
+    --bg-blush: #ffd6ea;
+    --bg-deep: #f8acdf;
+    --card: #ffffff;
+    --border-a: #ffd6e7;
+    --border-b: #e5d5ff;
+    --ink: #594464;
+    --ink-soft: #75677d;
+    --ink-softer: #817489;
+    --chip-bg: #fff0f6;
+    --chip-ink: #a26782;
+    --good: #6a9b72;
+    --cta-a: #ff8fc7;
+    --cta-b: #ff5fa8;
+    --gold: #c9a227;
+    --gold-light: #f1d375;
+    --parchment: #fff7ea;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Nunito", sans-serif;
+    color: var(--ink);
+    background:
+        radial-gradient(circle at 15% 10%, rgba(255,255,255,0.55), transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(229,213,255,0.6), transparent 50%),
+        linear-gradient(160deg, var(--bg-blush), var(--bg-deep) 70%);
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+}
+
+h1, h2 {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 600;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+#game-container {
+    position: relative;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.screen {
+    animation: fadeIn 0.5s ease;
+}
+
+.screen.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.small-heading {
+    margin: 0 0 4px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--chip-ink);
+    text-align: center;
+}
+
+/* ========================================
+   BUTTONS
+======================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 26px;
+    border: none;
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(103, 72, 120, 0.1);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(103, 72, 120, 0.16);
+}
+
+.btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.btn:focus-visible {
+    outline: 3px solid #d9b8e8;
+    outline-offset: 3px;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--cta-a), var(--cta-b));
+    color: #fff;
+    box-shadow: 0 10px 25px rgba(255, 95, 168, 0.35);
+}
+
+.primary-btn:hover {
+    box-shadow: 0 16px 32px rgba(255, 95, 168, 0.42);
+}
+
+.secondary-btn {
+    background: transparent;
+    color: var(--ink-soft);
+    box-shadow: none;
+    border: 2px solid rgba(89, 68, 100, 0.18);
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: none;
+}
+
+.text-button {
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: var(--chip-ink);
+    font-family: "Nunito", sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 999px;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.text-button:hover {
+    background: rgba(255, 255, 255, 0.55);
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   WELCOME SCREEN
+======================================== */
+
+#welcome-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.welcome-content {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 32px;
+    padding: 48px 36px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 50px rgba(103, 72, 120, 0.12);
+}
+
+.flower-decoration {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+    animation: floatY 3.5s ease-in-out infinite;
+}
+
+@keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+#welcome-screen h1 {
+    font-size: clamp(2.4rem, 7vw, 3.8rem);
+    color: var(--ink);
+    margin-bottom: 14px;
+}
+
+.welcome-tagline {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    margin-bottom: 26px;
+}
+
+.welcome-message {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    background: #fff;
+    border-radius: 22px;
+    padding: 24px 26px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 22px rgba(103, 72, 120, 0.07);
+    color: var(--ink-softer);
+    line-height: 1.6;
+}
+
+.welcome-message strong {
+    color: var(--ink);
+}
+
+.start-btn {
+    font-size: 1.1rem;
+    padding: 16px 38px;
+}
+
+.brand-title {
+    font-family: "Cinzel Decorative", "Fredoka", serif;
+    letter-spacing: 1px;
+    text-shadow: 0 0 18px rgba(201, 162, 39, 0.35), 0 0 2px rgba(89, 68, 100, 0.2);
+}
+
+.tiny-note {
+    margin-top: 18px;
+    font-size: 0.82rem;
+    color: var(--ink-softer);
+    letter-spacing: 0.3px;
+}
+
+/* ========================================
+   SCENARIO MENU
+======================================== */
+
+#scenario-menu {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 30px 10px 60px;
+}
+
+#scenario-menu header {
+    max-width: 650px;
+    margin: 0 auto 35px;
+    text-align: center;
+}
+
+#scenario-menu h1 {
+    margin: 8px 0 12px;
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    color: var(--ink);
+    line-height: 1.1;
+}
+
+#scenario-menu .subtitle {
+    max-width: 550px;
+    margin: 0 auto;
+    color: var(--ink-soft);
+    line-height: 1.6;
+}
+
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    max-width: 650px;
+    margin: 0 auto 35px;
+}
+
+.stat-item {
+    min-width: 0;
+    text-align: center;
+    padding: 16px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.65);
+    box-shadow: 0 8px 25px rgba(110, 75, 130, 0.07);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.stat-emoji {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+}
+
+.stat-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.78rem;
+    color: var(--ink-softer);
+}
+
+.stat-value {
+    display: block;
+    font-family: "Fredoka", sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.scenario-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin: 0;
+}
+
+.scenario-card {
+    position: relative;
+    min-height: 165px;
+    padding: 22px;
+    border: 2px solid transparent;
+    border-radius: 24px;
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--border-a), var(--border-b)) border-box;
+    color: #493b52;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(103, 72, 120, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.scenario-card:hover {
+    transform: translateY(-5px) rotate(-0.5deg);
+    box-shadow: 0 14px 32px rgba(103, 72, 120, 0.13);
+}
+
+.scenario-card:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+.scenario-card:focus-visible {
+    outline: 3px solid #d9b8e8;
+    outline-offset: 4px;
+}
+
+.scenario-category {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--chip-bg);
+    color: var(--chip-ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.scenario-card strong {
+    margin-top: 3px;
+    font-family: "Fredoka", sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+}
+
+.scenario-preview {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--ink-softer);
+}
+
+.scenario-completed {
+    align-self: flex-start;
+    margin-top: auto;
+    padding-top: 5px;
+    color: var(--good);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.menu-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 35px;
+}
+
+.menu-actions .btn {
+    min-width: 190px;
+}
+
+/* ========================================
+   SCENARIO SCREEN
+======================================== */
+
+#scenario-screen {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 10px 60px;
+}
+
+.scenario-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.scenario-box {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 28px;
+    padding: 36px 30px;
+    text-align: center;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 18px 40px rgba(103, 72, 120, 0.1);
+}
+
+.scenario-icon {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+    animation: floatY 3.5s ease-in-out infinite;
+}
+
+#scenario-title {
+    font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+    color: var(--ink);
+    margin: 6px 0 16px;
+}
+
+.prompt-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink-softer);
+    margin-bottom: 28px;
+}
+
+#options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.scenario-option {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+    padding: 16px 20px;
+    border-radius: 18px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--ink);
+    background: #fff;
+    border: 2px solid rgba(229, 213, 255, 0.6);
+}
+
+.scenario-option:hover:not(:disabled) {
+    border-color: var(--cta-b);
+    background: var(--chip-bg);
+}
+
+.scenario-option:disabled {
+    cursor: default;
+    opacity: 0.55;
+    transform: none !important;
+}
+
+.scenario-option.selected-option {
+    opacity: 1 !important;
+    border-color: var(--cta-b);
+    background: linear-gradient(135deg, #fff0f6, #f5ecff);
+    box-shadow: 0 10px 22px rgba(255, 95, 168, 0.18);
+}
+
+/* ========================================
+   FEEDBACK SCREEN
+======================================== */
+
+#feedback-screen {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 60px 16px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.feedback-page {
+    width: 100%;
+    text-align: center;
+}
+
+.big-feedback-icon {
+    font-size: 2.8rem;
+    margin: 6px 0 20px;
+    animation: floatY 3.5s ease-in-out infinite;
+}
+
+.feedback-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 28px 26px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--ink);
+    box-shadow: 0 14px 32px rgba(103, 72, 120, 0.1);
+    margin-bottom: 30px;
+}
+
+.feedback-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.feedback-actions .btn {
+    width: 100%;
+    max-width: 320px;
+}
+
+/* ========================================
+   RESULTS SCREEN
+======================================== */
+
+#results-screen {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 40px 16px 60px;
+    text-align: center;
+}
+
+#results-screen h1 {
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+
+.end-quote {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 26px;
+}
+
+.final-stats-card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 24px 26px;
+    text-align: left;
+    line-height: 1.8;
+    color: var(--ink);
+    box-shadow: 0 12px 28px rgba(103, 72, 120, 0.08);
+    margin-bottom: 20px;
+}
+
+.final-stats-card strong {
+    font-family: "Fredoka", sans-serif;
+    color: var(--ink);
+}
+
+.result-personality {
+    background: linear-gradient(135deg, #fff0f6, #f2e9ff);
+    border-radius: 22px;
+    padding: 26px;
+    margin-bottom: 30px;
+    box-shadow: 0 12px 28px rgba(103, 72, 120, 0.08);
+}
+
+.result-personality h2 {
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+
+.result-personality p {
+    color: var(--ink-softer);
+    line-height: 1.6;
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.result-actions .btn {
+    width: 100%;
+    max-width: 320px;
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 650px) {
+
+    .welcome-content {
+        padding: 34px 22px;
+        border-radius: 24px;
+    }
+
+    #scenario-menu {
+        padding: 20px 4px 45px;
+    }
+
+    #scenario-menu header {
+        margin-bottom: 25px;
+    }
+
+    #scenario-menu h1 {
+        font-size: 2.4rem;
+    }
+
+    .stats-bar {
+        gap: 8px;
+        margin-bottom: 25px;
+    }
+
+    .stat-item {
+        padding: 13px 8px;
+        border-radius: 16px;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+    }
+
+    .stat-value {
+        font-size: 1.15rem;
+    }
+
+    .scenario-list {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .scenario-card {
+        min-height: 145px;
+        padding: 19px;
+        border-radius: 21px;
+    }
+
+    .scenario-card strong {
+        font-size: 1.08rem;
+    }
+
+    .scenario-preview {
+        font-size: 0.86rem;
+    }
+
+    .menu-actions {
+        flex-direction: column;
+    }
+
+    .menu-actions .btn {
+        width: 100%;
+    }
+
+    .scenario-box {
+        padding: 28px 20px;
+        border-radius: 22px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* ========================================
+   MAGIC — enchanted ceiling + candles
+======================================== */
+
+.magic-sky {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.magic-star {
+    position: absolute;
+    color: var(--gold-light);
+    opacity: 0;
+    font-size: 0.7rem;
+    animation: twinkle 3.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 3px rgba(241, 211, 117, 0.8));
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.6); }
+    50% { opacity: 0.9; transform: scale(1); }
+}
+
+.magic-candle {
+    position: absolute;
+    font-size: 1.4rem;
+    opacity: 0.55;
+    animation: candleDrift 9s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255, 200, 120, 0.5));
+}
+
+@keyframes candleDrift {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-18px) rotate(2deg); }
+}
+
+#game-container,
+.screen {
+    position: relative;
+    z-index: 1;
+}
+
+/* Wand-flick click burst */
+
+.wand-burst {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.wand-ring {
+    position: absolute;
+    left: -60px;
+    top: -60px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(241, 211, 117, 0.55), rgba(255, 143, 199, 0.25) 45%, transparent 70%);
+    animation: ringPulse 0.55s ease-out forwards;
+}
+
+@keyframes ringPulse {
+    0% { opacity: 0.9; transform: scale(0.15); }
+    100% { opacity: 0; transform: scale(1.6); }
+}
+
+.wand-streak {
+    position: absolute;
+    width: 130px;
+    height: 5px;
+    left: -65px;
+    top: -2.5px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, transparent, var(--gold-light) 20%, #fff 50%, var(--cta-b) 80%, transparent);
+    box-shadow: 0 0 18px 4px rgba(241, 211, 117, 0.9), 0 0 30px 8px rgba(255, 95, 168, 0.5);
+    transform-origin: center;
+    animation: wandFlick 0.65s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes wandFlick {
+    0% { opacity: 0; transform: rotate(var(--wand-angle, -25deg)) scaleX(0.15); }
+    25% { opacity: 1; transform: rotate(calc(var(--wand-angle, -25deg) + 20deg)) scaleX(1.25); }
+    60% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(calc(var(--wand-angle, -25deg) + 45deg)) scaleX(1.5); }
+}
+
+.wand-spark {
+    position: absolute;
+    left: -6px;
+    top: -6px;
+    font-size: var(--spark-size, 1rem);
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(241, 211, 117, 0.9));
+    animation: sparkFly 0.85s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes sparkFly {
+    0% { opacity: 1; transform: translate(0, 0) scale(0.6) rotate(0deg); }
+    15% { opacity: 1; transform: translate(calc(var(--spark-x) * 0.3), calc(var(--spark-y) * 0.3)) scale(1.2) rotate(45deg); }
+    100% {
+        opacity: 0;
+        transform:
+            translate(var(--spark-x), calc(var(--spark-y) + 40px))
+            scale(0.3)
+            rotate(220deg);
+    }
+}
+
+/* Button casting glow — flashes gold when a spell is cast */
+
+.btn.is-casting,
+.text-button.is-casting {
+    animation: castGlow 0.6s ease-out;
+}
+
+@keyframes castGlow {
+    0% { box-shadow: 0 0 0 0 rgba(241, 211, 117, 0.9); }
+    40% { box-shadow: 0 0 24px 10px rgba(241, 211, 117, 0.55); }
+    100% { box-shadow: 0 0 0 0 rgba(241, 211, 117, 0); }
+}
+
+/* Ambient shimmer sweep across buttons */
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: skewX(-20deg);
+    transition: none;
+    pointer-events: none;
+}
+
+.btn:hover::after {
+    animation: shimmerSweep 0.9s ease;
+}
+
+@keyframes shimmerSweep {
+    0% { left: -60%; }
+    100% { left: 130%; }
+}
+
+</style>
+</head>
+
+<body>
+<div class="magic-sky" id="magic-sky" aria-hidden="true"></div>
+<main id="game-container">
+
+    <!-- WELCOME -->
+    <section id="welcome-screen" class="screen">
+
+        <div class="welcome-content">
+
+            <div class="flower-decoration">🪄 ✨ 🦉</div>
+
+            <p class="small-heading">WELCOME TO</p>
+
+            <h1 class="brand-title">Perfecto Patronum</h1>
+
+            <p class="welcome-tagline">
+                A perfect day doesn't mean everything goes perfectly —
+                sometimes it just takes a little magic. ⚡
+            </p>
+
+            <div class="welcome-message">
+
+                <p>
+                    Some days are calm. Some are chaotic.
+                    Some are just... weird. 💭
+                </p>
+
+                <p>
+                    <strong>Perfecto Patronum</strong> is a little space
+                    where you get to explore everyday moments
+                    and decide how you want to handle them.
+                </p>
+
+                <p>
+                    There are no wrong answers.
+                    There is no need to finish everything.
+                    Just choose the moments that feel familiar
+                    and see where your day takes you. 🌷
+                </p>
+
+            </div>
+
+            <button
+                id="start-button"
+                class="btn primary-btn start-btn"
+                type="button"
+            >
+                Start My Day ✨
+            </button>
+
+            <p class="tiny-note">
+                no pressure • no wrong answers • just vibes
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- SCENARIO MENU -->
+    <section id="scenario-menu" class="screen hidden">
+
+        <header class="page-header">
+
+            <p class="small-heading">YOUR DAY, YOUR CHOICE</p>
+
+            <h1>Choose a Moment 🌸</h1>
+
+            <p class="subtitle">
+                Pick whatever feels relatable right now.
+                You don't have to do them all. 🫶
+            </p>
+
+        </header>
+
+
+        <div class="stats-bar">
+
+            <div class="stat-item joy-stat">
+                <span class="stat-emoji">🌷</span>
+                <span class="stat-label">Peace / Joy</span>
+                <span id="menu-stat-joy" class="stat-value">50.0</span>
+            </div>
+
+            <div class="stat-item vibes-stat">
+                <span class="stat-emoji">✨</span>
+                <span class="stat-label">Vibes</span>
+                <span id="menu-stat-vibes" class="stat-value">50</span>
+            </div>
+
+            <div class="stat-item chaos-stat">
+                <span class="stat-emoji">🌀</span>
+                <span class="stat-label">Chaos</span>
+                <span id="menu-stat-chaos" class="stat-value">0%</span>
+            </div>
+
+        </div>
+
+
+        <div id="scenario-list" class="scenario-list"></div>
+
+
+        <div class="menu-actions">
+
+            <button
+                id="menu-results-button"
+                class="btn"
+                type="button"
+            >
+                See My Results 💌
+            </button>
+
+            <button
+                id="menu-home-button"
+                class="btn secondary-btn"
+                type="button"
+            >
+                Back to Welcome
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SCENARIO -->
+    <section id="scenario-screen" class="screen hidden">
+
+        <div class="scenario-navigation">
+
+            <button
+                id="scenario-home-button"
+                class="text-button"
+                type="button"
+            >
+                ← Home
+            </button>
+
+            <button
+                id="scenario-menu-button"
+                class="text-button"
+                type="button"
+            >
+                Moments ✨
+            </button>
+
+        </div>
+
+
+        <div class="scenario-box">
+
+            <div class="scenario-icon">💭</div>
+
+            <p id="scenario-number" class="small-heading"></p>
+
+            <h2 id="scenario-title">
+                Loading...
+            </h2>
+
+            <p id="scenario-prompt" class="prompt-text">
+                Loading...
+            </p>
+
+            <div id="options-container"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEEDBACK -->
+    <section id="feedback-screen" class="screen hidden">
+
+        <div class="feedback-page">
+
+            <p class="small-heading">
+                YOUR MOMENT
+            </p>
+
+            <div class="big-feedback-icon">
+                💭
+            </div>
+
+            <p id="feedback-comment" class="feedback-box">
+                Your feedback will appear here.
+            </p>
+
+
+            <div class="feedback-actions">
+
+                <button
+                    id="another-scenario-button"
+                    class="btn primary-btn"
+                    type="button"
+                >
+                    Choose Another Moment 🌷
+                </button>
+
+                <button
+                    id="feedback-results-button"
+                    class="btn"
+                    type="button"
+                >
+                    See My Results ✨
+                </button>
+
+                <button
+                    id="feedback-home-button"
+                    class="btn secondary-btn"
+                    type="button"
+                >
+                    Back to Welcome
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESULTS -->
+    <section id="results-screen" class="screen hidden">
+
+        <div class="results-content">
+
+            <div class="flower-decoration">
+                ⚡ 🪄 ⚡
+            </div>
+
+            <p class="small-heading">
+                YOUR DAY SO FAR
+            </p>
+
+            <h1 class="brand-title">Here's Your Vibe 💌</h1>
+
+            <p id="result-message" class="end-quote">
+                Every choice tells a little story.
+            </p>
+
+
+            <div id="final-stats" class="final-stats-card"></div>
+
+
+            <div
+                id="result-personality"
+                class="result-personality"
+            ></div>
+
+
+            <div class="result-actions">
+
+                <button
+                    id="results-moments-button"
+                    class="btn primary-btn"
+                    type="button"
+                >
+                    Choose More Moments 🌸
+                </button>
+
+                <button
+                    id="results-home-button"
+                    class="btn secondary-btn"
+                    type="button"
+                >
+                    Back to Welcome
+                </button>
+
+                <button
+                    id="restart-button"
+                    class="btn"
+                    type="button"
+                >
+                    Start Fresh 🔄
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+<script>
+// ========================================
+// A PERFECT DAY — GAME SCRIPT
+// ========================================
+
+let joy = 50;
+let vibes = 50;
+let chaos = 0;
+
+let completedScenarios = [];
+
+const scenarios = [
+    {
+        id: 1,
+        category: "Morning ☀️",
+        title: "The Alarm",
+        prompt: "Your alarm goes off at 6:30. You have somewhere to be at 8.",
+        options: [
+            { text: "A) Get up and enjoy a slow morning.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Protecting your morning peace sets the tone for the whole day." },
+            { text: "B) Snooze once. You clearly need those extra minutes.", joy: 0.2, vibes: 10, chaos: 5, feedback: "A few quiet minutes can work wonders. Sometimes rest is part of the plan." },
+            { text: "C) Wake up at 7:25 and enter survival mode. 😭", joy: -0.2, vibes: -20, chaos: 25, feedback: "The chaos won today, but survival mode is still surviving." }
+        ]
+    },
+    {
+        id: 2,
+        category: "Morning ☀️",
+        title: "The Missing Thing",
+        prompt: "You're ready to leave... except you can't find the one thing you need.",
+        options: [
+            { text: "A) Use an alternative and move on.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Choosing peace sometimes means letting go of perfection." },
+            { text: "B) Ask someone if they've seen it.", joy: 0.2, vibes: 10, chaos: 5, feedback: "Asking for help can be the fastest route back to calm." },
+            { text: "C) Turn your entire room upside down.", joy: -0.2, vibes: -20, chaos: 20, feedback: "Sometimes panic feels productive... until your room becomes a crime scene." }
+        ]
+    },
+    {
+        id: 3,
+        category: "Morning ☀️",
+        title: "Breakfast",
+        prompt: "You have 15 minutes before you need to leave.",
+        options: [
+            { text: "A) Sit down and actually eat.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Nourishing yourself is one of the easiest ways to protect your peace." },
+            { text: "B) Grab something and eat on the way.", joy: 0.2, vibes: 10, chaos: 5, feedback: "A little compromise keeps the day moving without completely losing your chill." },
+            { text: "C) Skip breakfast because you're already late.", joy: -0.2, vibes: -10, chaos: 10, feedback: "Being busy can make self-care feel optional, but you still deserve to eat." }
+        ]
+    },
+    {
+        id: 4,
+        category: "Study 📚",
+        title: "The Study Session",
+        prompt: "You've been staring at the same page for 25 minutes.",
+        options: [
+            { text: "A) Take a short break and come back.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Stepping away isn't giving up. Sometimes it's how you get your brain back." },
+            { text: "B) Switch to something easier.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Adapting your goals protects your energy." },
+            { text: "C) Suddenly reorganise all your notes.", joy: 0.1, vibes: 20, chaos: 15, feedback: "Productive procrastination is still procrastination... but at least the notes look amazing." }
+        ]
+    },
+    {
+        id: 5,
+        category: "Study 📚",
+        title: "The Assignment You Forgot",
+        prompt: "You suddenly remember something is due today.",
+        options: [
+            { text: "A) Finish the important parts and submit it.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Done is better than perfect when protecting your peace." },
+            { text: "B) Ask for a little extra time.", joy: 0.1, vibes: 10, chaos: 5, feedback: "Communicating your limits is healthier than silently drowning in chaos." },
+            { text: "C) Activate emergency productivity mode.", joy: -0.1, vibes: 10, chaos: 20, feedback: "Adrenaline has entered the chat. Effective? Maybe. Peaceful? Absolutely not." }
+        ]
+    },
+    {
+        id: 6,
+        category: "Social 💬",
+        title: "The Group Chat",
+        prompt: "Your phone buzzes. It's the group chat.",
+        options: [
+            { text: "A) Check it quickly and put your phone away.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Digital boundaries keep your headspace peaceful." },
+            { text: "B) Have a quick laugh with everyone.", joy: 0.2, vibes: 20, chaos: 5, feedback: "A little connection can instantly improve a boring day." },
+            { text: "C) Accidentally join a completely unnecessary argument.", joy: -0.2, vibes: -10, chaos: 20, feedback: "You came for one notification and somehow left with emotional damage." }
+        ]
+    },
+    {
+        id: 7,
+        category: "Social 💬",
+        title: "The Awkward Moment",
+        prompt: "You say something. Nobody responds.",
+        options: [
+            { text: "A) Assume they didn't hear you.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Giving people the benefit of the doubt keeps unnecessary overthinking away." },
+            { text: "B) Laugh and move on.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Being able to laugh at yourself is genuinely a superpower." },
+            { text: "C) Decide everyone thinks you're weird now.", joy: -0.2, vibes: -20, chaos: 15, feedback: "That tiny moment probably mattered much less to everyone else than it did to you." }
+        ]
+    },
+    {
+        id: 8,
+        category: "Home 🏠",
+        title: "Ek Kaam Tha…",
+        prompt: "You finally get home. You're tired. Then you hear: 'Ek kaam tha…'",
+        options: [
+            { text: "A) Do it now and relax afterward.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Finishing the little thing now can make the rest of your evening feel lighter." },
+            { text: "B) Ask for 20 minutes first.", joy: 0.2, vibes: 20, chaos: 5, feedback: "Communicating that you need a breather is completely reasonable." },
+            { text: "C) Quietly disappear into your room.", joy: -0.2, vibes: 10, chaos: 15, feedback: "Escaping buys peace now... but the 'kaam' may remember you later." }
+        ]
+    },
+    {
+        id: 9,
+        category: "Home 🏠",
+        title: "Sibling Has Chosen Violence",
+        prompt: "You're trying to have a peaceful moment. Your sibling enters: 'What are you doing?' ... 'Why?'",
+        options: [
+            { text: "A) Laugh and tell them to leave you alone.", joy: 0.2, vibes: 20, chaos: 5, feedback: "Humour can turn an annoying moment into something harmless." },
+            { text: "B) Talk to them for a few minutes.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Sometimes the interruption becomes an unexpectedly nice moment." },
+            { text: "C) Lose your patience over something ridiculously small.", joy: -0.2, vibes: -10, chaos: 20, feedback: "Exhaustion makes patience harder. Take a breath before the next battle." }
+        ]
+    },
+    {
+        id: 10,
+        category: "Social 💬",
+        title: "The Comparison Scroll",
+        prompt: "You open social media. Everyone seems to be achieving something.",
+        options: [
+            { text: "A) Put your phone down and return to your own day.", joy: 0.2, vibes: 10, chaos: -10, feedback: "Your life doesn't need to look like somebody else's highlight reel." },
+            { text: "B) Be happy for them and keep scrolling.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Celebrating someone else's happiness without comparing yourself keeps the vibes light." },
+            { text: "C) Start comparing your life to theirs.", joy: -0.2, vibes: -20, chaos: 20, feedback: "Comparison can turn a perfectly normal day into a competition you never agreed to." }
+        ]
+    },
+    {
+        id: 11,
+        category: "Bad Day 🌧️",
+        title: "Everything Is Annoying",
+        prompt: "The Wi-Fi is slow. Your charger is tangled. Someone is talking. Your pen stops working.",
+        options: [
+            { text: "A) Take some quiet time.", joy: 0.2, vibes: 10, chaos: -10, feedback: "Sometimes the healthiest response is simply stepping away for a moment." },
+            { text: "B) Put on headphones and create your own bubble.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Creating your own little bubble is absolutely a life skill." },
+            { text: "C) Snap at someone.", joy: -0.2, vibes: -20, chaos: 20, feedback: "Bad moods happen. What matters is giving yourself a chance to reset." }
+        ]
+    },
+    {
+        id: 12,
+        category: "Bad Day 🌧️",
+        title: "The Off Day",
+        prompt: "Nothing terrible happened. You just don't feel like yourself today.",
+        options: [
+            { text: "A) Accept that today doesn't need to be amazing.", joy: 0.2, vibes: 10, chaos: -10, feedback: "You don't have to turn every day into a success story." },
+            { text: "B) Do one small thing you genuinely enjoy.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Small comforts can make an ordinary difficult day feel softer." },
+            { text: "C) Decide the entire day is ruined.", joy: -0.2, vibes: -20, chaos: 15, feedback: "A bad hour doesn't have to become a bad day." }
+        ]
+    },
+    {
+        id: 13,
+        category: "Bad Day 🌧️",
+        title: "Someone Comments",
+        prompt: "Someone casually says: 'You look tired today.' You were actually feeling pretty good.",
+        options: [
+            { text: "A) Laugh it off.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Not every comment deserves space in your head." },
+            { text: "B) Ask yourself why it bothered you and move on.", joy: 0.1, vibes: 10, chaos: 5, feedback: "A little self-reflection can stop a small comment from becoming a huge thought." },
+            { text: "C) Replay the comment for three hours.", joy: -0.2, vibes: -20, chaos: 15, feedback: "Overthinking can steal joy from moments that haven't even happened yet." }
+        ]
+    },
+    {
+        id: 14,
+        category: "Evening 🌙",
+        title: "The Evening",
+        prompt: "You've had a long day. You finally have some free time.",
+        options: [
+            { text: "A) Watch something comforting.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Unwinding with something comforting can be exactly what you need." },
+            { text: "B) Get chai/snacks with someone.", joy: 0.2, vibes: 20, chaos: 5, feedback: "Warm drinks and good company? Maximum vibes." },
+            { text: "C) Put on headphones and enjoy being alone.", joy: 0.2, vibes: 20, chaos: -10, feedback: "Sometimes solitude is exactly how you recharge." }
+        ]
+    },
+    {
+        id: 15,
+        category: "Evening 🌙",
+        title: "Before Bed",
+        prompt: "Tomorrow is going to be busy.",
+        options: [
+            { text: "A) Prepare your things tonight.", joy: 0.2, vibes: 10, chaos: -10, feedback: "Future-you will be very grateful." },
+            { text: "B) Write down the important things and leave the rest for tomorrow.", joy: 0.2, vibes: 10, chaos: -5, feedback: "Getting thoughts out of your head can make sleep feel much easier." },
+            { text: "C) Stress about tomorrow before today has even ended.", joy: -0.2, vibes: -20, chaos: 20, feedback: "Tomorrow hasn't happened yet. Let tonight belong to you." }
+        ]
+    },
+    {
+        id: 16,
+        category: "Evening 🌙",
+        title: "The Quiet Moment",
+        prompt: "Nobody is asking anything from you. No notifications. No deadlines. Just silence.",
+        options: [
+            { text: "A) Enjoy it.", joy: 0.2, vibes: 10, chaos: -10, feedback: "Pure quiet is rare. Let yourself enjoy it." },
+            { text: "B) Put on your favourite music.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Sometimes the perfect soundtrack makes a peaceful moment even better." },
+            { text: "C) Wonder why nobody is texting you.", joy: -0.1, vibes: -10, chaos: 15, feedback: "Quiet isn't rejection. Sometimes it is simply a chance to breathe." }
+        ]
+    },
+    {
+        id: 17,
+        category: "Social 💬",
+        title: "The Cancelled Plan",
+        prompt: "You were actually looking forward to something, but your plans get cancelled.",
+        options: [
+            { text: "A) Make a new plan.", joy: 0.2, vibes: 20, chaos: -5, feedback: "A change of plans doesn't have to mean a ruined day." },
+            { text: "B) Reschedule.", joy: 0.2, vibes: 10, chaos: 5, feedback: "Flexibility keeps disappointment from taking over." },
+            { text: "C) Decide the whole day is ruined.", joy: -0.2, vibes: -20, chaos: 15, feedback: "Disappointment is real, but there can still be something good left in the day." }
+        ]
+    },
+    {
+        id: 18,
+        category: "Social 💬",
+        title: "Unread Messages",
+        prompt: "You notice someone hasn't replied to your message for hours.",
+        options: [
+            { text: "A) Assume they're probably busy.", joy: 0.2, vibes: 10, chaos: -10, feedback: "Not every unanswered message has a hidden meaning." },
+            { text: "B) Send a funny follow-up later.", joy: 0.1, vibes: 20, chaos: 5, feedback: "A little humour can keep your brain from writing unnecessary stories." },
+            { text: "C) Overanalyse every possible reason.", joy: -0.2, vibes: -20, chaos: 20, feedback: "Your brain can create an entire drama series from one unread message." }
+        ]
+    },
+    {
+        id: 19,
+        category: "Study 📚",
+        title: "The Procrastination Spiral",
+        prompt: "You have something important to do, but suddenly everything else seems more interesting.",
+        options: [
+            { text: "A) Do just five minutes of the task.", joy: 0.2, vibes: 10, chaos: -10, feedback: "Starting small is still starting." },
+            { text: "B) Make a realistic plan for later.", joy: 0.2, vibes: 10, chaos: -5, feedback: "A realistic plan beats an imaginary perfect schedule." },
+            { text: "C) Watch 'one' video and lose an hour.", joy: 0.1, vibes: 20, chaos: 15, feedback: "You may have lost the hour, but at least the algorithm was entertained." }
+        ]
+    },
+    {
+        id: 20,
+        category: "Random ✨",
+        title: "The Unexpected Kindness",
+        prompt: "Someone does something small but genuinely kind for you.",
+        options: [
+            { text: "A) Let yourself appreciate it.", joy: 0.2, vibes: 20, chaos: -10, feedback: "Receiving kindness can soften an entire day." },
+            { text: "B) Thank them and carry the good feeling with you.", joy: 0.2, vibes: 20, chaos: -5, feedback: "Gratitude makes good moments last longer." },
+            { text: "C) Pretend it didn't affect you even though it absolutely did. 😭", joy: 0.2, vibes: 10, chaos: -5, feedback: "You don't have to pretend kindness doesn't matter. Let yourself enjoy it." }
+        ]
+    }
+];
+
+const shortPreviews = {
+    1: "How will you start your morning?",
+    2: "You can't find the one thing you need.",
+    3: "Only 15 minutes before you leave.",
+    4: "Your brain has stopped cooperating.",
+    5: "Something important is due today.",
+    6: "The group chat is calling.",
+    7: "Nobody responds. Awkward...",
+    8: "You finally get home... then hear it.",
+    9: "Your sibling has entered the chat.",
+    10: "Everyone online seems ahead.",
+    11: "Literally everything is annoying.",
+    12: "It's not a bad day. Just... off.",
+    13: "Someone makes an unexpected comment.",
+    14: "Finally. Some free time.",
+    15: "Tomorrow is already on your mind.",
+    16: "Nobody needs anything from you.",
+    17: "The plan you wanted gets cancelled.",
+    18: "Someone hasn't replied yet.",
+    19: "Everything suddenly looks more interesting.",
+    20: "Someone does something unexpectedly kind."
+};
+
+const welcomeScreen = document.getElementById("welcome-screen");
+const menuScreen = document.getElementById("scenario-menu");
+const scenarioScreen = document.getElementById("scenario-screen");
+const feedbackScreen = document.getElementById("feedback-screen");
+const resultsScreen = document.getElementById("results-screen");
+
+const scenarioList = document.getElementById("scenario-list");
+
+const scenarioNumber = document.getElementById("scenario-number");
+const scenarioTitle = document.getElementById("scenario-title");
+const scenarioPrompt = document.getElementById("scenario-prompt");
+const optionsContainer = document.getElementById("options-container");
+
+const feedbackComment = document.getElementById("feedback-comment");
+
+const menuStatJoy = document.getElementById("menu-stat-joy");
+const menuStatVibes = document.getElementById("menu-stat-vibes");
+const menuStatChaos = document.getElementById("menu-stat-chaos");
+
+const finalStats = document.getElementById("final-stats");
+const resultPersonality = document.getElementById("result-personality");
+const resultMessage = document.getElementById("result-message");
+
+function showScreen(screen) {
+    const screens = [welcomeScreen, menuScreen, scenarioScreen, feedbackScreen, resultsScreen];
+    screens.forEach(function (item) {
+        if (item) { item.classList.add("hidden"); }
+    });
+    if (screen) { screen.classList.remove("hidden"); }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function updateStats() {
+    if (menuStatJoy) { menuStatJoy.textContent = joy.toFixed(1); }
+    if (menuStatVibes) { menuStatVibes.textContent = vibes; }
+    if (menuStatChaos) { menuStatChaos.textContent = chaos + "%"; }
+}
+
+function getShortPreview(scenario) {
+    return shortPreviews[scenario.id] || scenario.prompt;
+}
+
+function renderScenarioMenu() {
+    if (!scenarioList) { return; }
+    scenarioList.innerHTML = "";
+
+    scenarios.forEach(function (scenario) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "scenario-card";
+
+        const alreadyPlayed = completedScenarios.includes(scenario.id);
+
+        const category = document.createElement("span");
+        category.className = "scenario-category";
+        category.textContent = scenario.category;
+
+        const title = document.createElement("strong");
+        title.textContent = scenario.title;
+
+        const preview = document.createElement("span");
+        preview.className = "scenario-preview";
+        preview.textContent = getShortPreview(scenario);
+
+        button.appendChild(category);
+        button.appendChild(title);
+        button.appendChild(preview);
+
+        if (alreadyPlayed) {
+            const completed = document.createElement("span");
+            completed.className = "scenario-completed";
+            completed.textContent = "✓ Played";
+            button.appendChild(completed);
+        }
+
+        button.addEventListener("click", function () {
+            openScenario(scenario);
+        });
+
+        scenarioList.appendChild(button);
+    });
+
+    updateStats();
+}
+
+function openScenario(scenario) {
+    if (!scenario) { return; }
+
+    scenarioNumber.textContent = scenario.category;
+    scenarioTitle.textContent = scenario.title;
+    scenarioPrompt.textContent = scenario.prompt;
+
+    optionsContainer.innerHTML = "";
+
+    scenario.options.forEach(function (option) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn scenario-option";
+        button.textContent = option.text;
+
+        button.addEventListener("click", function () {
+            selectOption(scenario, option, button);
+        });
+
+        optionsContainer.appendChild(button);
+    });
+
+    showScreen(scenarioScreen);
+}
+
+function selectOption(scenario, option, selectedButton) {
+    const buttons = optionsContainer.querySelectorAll(".scenario-option");
+    buttons.forEach(function (button) {
+        button.disabled = true;
+    });
+
+    if (selectedButton) {
+        selectedButton.classList.add("selected-option");
+    }
+
+    joy = Number((joy + option.joy).toFixed(1));
+    vibes += option.vibes;
+    chaos += option.chaos;
+    chaos = Math.max(0, Math.min(100, chaos));
+
+    if (!completedScenarios.includes(scenario.id)) {
+        completedScenarios.push(scenario.id);
+    }
+
+    feedbackComment.textContent = "💭 " + option.feedback;
+
+    updateStats();
+    showScreen(feedbackScreen);
+}
+
+function showResults() {
+    updateStats();
+
+    let personality = "";
+    let message = "";
+
+    if (chaos <= 20 && joy >= 51) {
+        personality = "🌿 The Peace Protector";
+        message = "You seem to know how to protect your peace while still enjoying the little things.";
+    } else if (chaos >= 60) {
+        personality = "🌀 The Lovable Chaos Gremlin";
+        message = "Life may not always go according to plan... but at least you bring personality to the chaos.";
+    } else if (vibes >= 180) {
+        personality = "✨ The Good-Vibes Human";
+        message = "You know how to find little pockets of joy even when the day gets messy.";
+    } else if (joy < 49) {
+        personality = "💭 The Overthinker";
+        message = "You may have had some messy moments, but remember: one choice never defines the whole day.";
+    } else {
+        personality = "🌷 The Balanced Human";
+        message = "You don't need everything to go perfectly. You just know how to keep moving through the messy parts.";
+    }
+
+    finalStats.innerHTML =
+        "<strong>✨ Your Current Stats ✨</strong><br><br>" +
+        "🌸 Peace/Joy: " + joy.toFixed(1) + "<br>" +
+        "💫 Vibes: " + vibes + "<br>" +
+        "🌀 Chaos Level: " + chaos + "%<br><br>" +
+        "🌷 Moments explored: " + completedScenarios.length + " / " + scenarios.length;
+
+    resultPersonality.innerHTML =
+        "<h2>" + personality + "</h2>" +
+        "<p>" + message + "</p>";
+
+    resultMessage.textContent =
+        "You explored " + completedScenarios.length + " moment" +
+        (completedScenarios.length === 1 ? "" : "s") +
+        " today. There's no need to do them all. 💗";
+
+    showScreen(resultsScreen);
+}
+
+function resetGame() {
+    joy = 50;
+    vibes = 50;
+    chaos = 0;
+    completedScenarios = [];
+
+    updateStats();
+    renderScenarioMenu();
+    showScreen(welcomeScreen);
+}
+
+document.getElementById("start-button").addEventListener("click", function () {
+    renderScenarioMenu();
+    showScreen(menuScreen);
+});
+
+document.getElementById("menu-home-button").addEventListener("click", function () {
+    showScreen(welcomeScreen);
+});
+
+document.getElementById("menu-results-button").addEventListener("click", function () {
+    showResults();
+});
+
+document.getElementById("scenario-home-button").addEventListener("click", function () {
+    showScreen(welcomeScreen);
+});
+
+document.getElementById("scenario-menu-button").addEventListener("click", function () {
+    renderScenarioMenu();
+    showScreen(menuScreen);
+});
+
+document.getElementById("another-scenario-button").addEventListener("click", function () {
+    renderScenarioMenu();
+    showScreen(menuScreen);
+});
+
+document.getElementById("feedback-results-button").addEventListener("click", function () {
+    showResults();
+});
+
+document.getElementById("feedback-home-button").addEventListener("click", function () {
+    showScreen(welcomeScreen);
+});
+
+document.getElementById("results-moments-button").addEventListener("click", function () {
+    renderScenarioMenu();
+    showScreen(menuScreen);
+});
+
+document.getElementById("results-home-button").addEventListener("click", function () {
+    showScreen(welcomeScreen);
+});
+
+document.getElementById("restart-button").addEventListener("click", function () {
+    resetGame();
+});
+
+showScreen(welcomeScreen);
+updateStats();
+
+// ========================================
+// MAGIC — enchanted ceiling + wand flicks
+// ========================================
+
+(function setupMagic() {
+
+    const reduceMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const sky = document.getElementById("magic-sky");
+
+    if (sky && !reduceMotion) {
+
+        const stars = ["✨", "⭐", "✦"];
+
+        for (let i = 0; i < 28; i++) {
+            const star = document.createElement("span");
+            star.className = "magic-star";
+            star.textContent = stars[Math.floor(Math.random() * stars.length)];
+            star.style.left = Math.random() * 100 + "%";
+            star.style.top = Math.random() * 100 + "%";
+            star.style.animationDelay = (Math.random() * 4) + "s";
+            star.style.animationDuration = (2.4 + Math.random() * 2.2) + "s";
+            sky.appendChild(star);
+        }
+
+        const candles = ["🕯️"];
+
+        for (let i = 0; i < 6; i++) {
+            const candle = document.createElement("span");
+            candle.className = "magic-candle";
+            candle.textContent = candles[0];
+            candle.style.left = (5 + Math.random() * 90) + "%";
+            candle.style.top = (5 + Math.random() * 85) + "%";
+            candle.style.animationDelay = (Math.random() * 5) + "s";
+            candle.style.animationDuration = (7 + Math.random() * 4) + "s";
+            sky.appendChild(candle);
+        }
+
+    }
+
+    if (reduceMotion) {
+        return;
+    }
+
+    function playChime() {
+
+        try {
+
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioCtx();
+            const notes = [1046.5, 1318.5, 1568.0]; // C6, E6, G6
+
+            notes.forEach(function (freq, i) {
+
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = "sine";
+                osc.frequency.value = freq;
+
+                const start = ctx.currentTime + i * 0.07;
+
+                gain.gain.setValueAtTime(0, start);
+                gain.gain.linearRampToValueAtTime(0.09, start + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.35);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(start);
+                osc.stop(start + 0.4);
+
+            });
+
+            setTimeout(function () {
+                ctx.close();
+            }, 900);
+
+        } catch (err) {
+            // audio not available — silently continue without sound
+        }
+
+    }
+
+    function spawnWandFlick(x, y) {
+
+        const burst = document.createElement("div");
+        burst.className = "wand-burst";
+        burst.style.left = x + "px";
+        burst.style.top = y + "px";
+        burst.style.setProperty("--wand-angle", (Math.random() * 70 - 35) + "deg");
+
+        const ring = document.createElement("div");
+        ring.className = "wand-ring";
+        burst.appendChild(ring);
+
+        const streak = document.createElement("div");
+        streak.className = "wand-streak";
+        burst.appendChild(streak);
+
+        const sparkChars = ["✨", "⭐", "💫", "🌟", "·"];
+        const sparkCount = 14;
+
+        for (let i = 0; i < sparkCount; i++) {
+            const spark = document.createElement("span");
+            spark.className = "wand-spark";
+            spark.textContent =
+                sparkChars[Math.floor(Math.random() * sparkChars.length)];
+
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 40 + Math.random() * 70;
+
+            spark.style.setProperty("--spark-x", Math.cos(angle) * distance + "px");
+            spark.style.setProperty("--spark-y", Math.sin(angle) * distance + "px");
+            spark.style.setProperty("--spark-size", (0.75 + Math.random() * 0.9) + "rem");
+            spark.style.animationDelay = (Math.random() * 0.12) + "s";
+
+            burst.appendChild(spark);
+        }
+
+        document.body.appendChild(burst);
+
+        setTimeout(function () {
+            burst.remove();
+        }, 950);
+
+    }
+
+    document.addEventListener("click", function (event) {
+
+        const button = event.target.closest(".btn, .text-button, .scenario-card");
+
+        if (button) {
+            spawnWandFlick(event.clientX, event.clientY);
+            playChime();
+
+            button.classList.add("is-casting");
+            setTimeout(function () {
+                button.classList.remove("is-casting");
+            }, 650);
+        }
+
+    });
+
+})();
+</script>
+</body>
+</html>
